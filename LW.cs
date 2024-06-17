@@ -58,7 +58,12 @@ namespace LogWriter
                             }
                             break;
                         case "-s":
-                            f.statusFilter = int.Parse(args[++i]);
+                            try {
+                                f.statusFilter = int.Parse(args[++i]);
+                            } catch (Exception) {
+                                Console.WriteLine("Invalid status: int expected");
+                                Environment.Exit(0);
+                            }
                             break;
                         default:
                             if (availableShowOnly.Contains(flag)) {

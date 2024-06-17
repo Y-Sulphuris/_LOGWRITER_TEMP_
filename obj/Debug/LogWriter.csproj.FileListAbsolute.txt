@@ -1,0 +1,12 @@
+G:\Project\RiderProjects\LogWriter\bin\Debug\LogWriter.exe.config
+G:\Project\RiderProjects\LogWriter\bin\Debug\LogWriter.exe
+G:\Project\RiderProjects\LogWriter\bin\Debug\LogWriter.pdb
+G:\Project\RiderProjects\LogWriter\bin\Debug\System.Data.SQLite.dll
+G:\Project\RiderProjects\LogWriter\bin\Debug\System.Data.SQLite.Linq.dll
+G:\Project\RiderProjects\LogWriter\bin\Debug\System.Data.SQLite.xml
+G:\Project\RiderProjects\LogWriter\obj\Debug\LogWriter.csproj.AssemblyReference.cache
+G:\Project\RiderProjects\LogWriter\obj\Debug\LogWriter.csproj.SuggestedBindingRedirects.cache
+G:\Project\RiderProjects\LogWriter\obj\Debug\LogWriter.csproj.CoreCompileInputs.cache
+G:\Project\RiderProjects\LogWriter\obj\Debug\LogWriter.csproj.CopyComplete
+G:\Project\RiderProjects\LogWriter\obj\Debug\LogWriter.exe
+G:\Project\RiderProjects\LogWriter\obj\Debug\LogWriter.pdb

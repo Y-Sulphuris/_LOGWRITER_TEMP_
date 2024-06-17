@@ -21,11 +21,11 @@ namespace LogWriter
         }
 
         public string toSqlValuesString() {
-            return $"('{ip}', '{u}', '{l}', '{date}', '{r}', {s}, {b})";
+            return $"('{ip}', '{u}', '{l}', datetime('{date:yyyy-MM-dd}'), '{r}', {s}, {b})";
         }
         
         public string ToJson() {
-            return $"{{\"ip\": \"{ip}\", \"user:\"\"{u}\", \"logname\": \"{l}\", \"time\": \"{date}\", \"first_line\": \"{r}\", \"status\": \"{s}\", \"bytes\": \"{b}\"}}";
+            return $"{{\"ip\": \"{ip}\", \"user:\"\"{u}\", \"logname\": \"{l}\", \"time\": \"{date:yyyy-MM-dd}\", \"first_line\": \"{r}\", \"status\": \"{s}\", \"bytes\": \"{b}\"}}";
         }
     }
 }

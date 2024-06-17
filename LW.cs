@@ -40,10 +40,22 @@ namespace LogWriter
                             f.userFiler = args[++i];
                             break;
                         case "-minDate":
-                            f.minDateFilter = DateTime.ParseExact(args[++i], "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                            try {
+                                f.minDateFilter = DateTime.ParseExact(args[++i], "dd.MM.yyyy",
+                                    CultureInfo.InvariantCulture);
+                            } catch (Exception) {
+                                Console.WriteLine("Invalid date format in -minDate (dd.MM.yyyy expected)");
+                                Environment.Exit(0);
+                            }
                             break;
                         case "-maxDate":
-                            f.maxDateFilter = DateTime.ParseExact(args[++i], "dd.MM.yyyy", CultureInfo.InvariantCulture);
+                            try {
+                                f.maxDateFilter = DateTime.ParseExact(args[++i], "dd.MM.yyyy",
+                                    CultureInfo.InvariantCulture);
+                            } catch (Exception) {
+                                Console.WriteLine("Invalid date format in -maxDate (dd.MM.yyyy expected)");
+                                Environment.Exit(0);
+                            }
                             break;
                         case "-s":
                             f.statusFilter = int.Parse(args[++i]);
@@ -79,7 +91,7 @@ namespace LogWriter
             for (int i = 0; i < showOnly.Count; i++) {
                 string se = showOnly[i]; // O(1) в любом случае
                 if (se == "date") {
-                    cmdBuilder.Append("strftime(log_date) as \"date\"");
+                    cmdBuilder.Append("log_date as \"date\"");
                 } else cmdBuilder.Append("log_" + se + " as " + "\"" + se + "\"");
                 if (i != showOnly.Count-1) {
                     cmdBuilder.Append(",\n");
@@ -88,21 +100,24 @@ namespace LogWriter
 
             cmdBuilder.Append(" from log where not length(log_ip) = 0 ");
             if (filters.ipFilter != null) {
-                cmdBuilder.Append($"AND ip = '{filters.ipFilter}' ");
+                cmdBuilder.Append($"AND log_ip = '{filters.ipFilter}' ");
             }
             if (filters.userFiler != null) {
-                cmdBuilder.Append($"AND user = '{filters.userFiler}' ");
+                cmdBuilder.Append($"AND log_user = '{filters.userFiler}' ");
             }
             if (filters.statusFilter != null) {
-                cmdBuilder.Append($"AND status = {filters.statusFilter} ");
+                cmdBuilder.Append($"AND log_status = {filters.statusFilter} ");
             }
             if (filters.minDateFilter != null) {
-                cmdBuilder.Append($"AND '{filters.minDateFilter}' < date ");
+                cmdBuilder.Append($"AND datetime('{filters.minDateFilter:yyyy-MM-dd}') < log_date ");
             }
             if (filters.maxDateFilter != null) {
-                cmdBuilder.Append($"AND date < '{filters.maxDateFilter}' ");
+                cmdBuilder.Append($"AND datetime('{filters.maxDateFilter:yyyy-MM-dd}') > log_date ");//yyyy-MM-dd
             }
 
+            cmdBuilder.Append(";");
+
+            //Console.WriteLine(cmdBuilder);
 
 
             SQLiteDataReader r;
@@ -184,6 +199,7 @@ namespace LogWriter
                         string cmd =
                             "Insert into log (log_ip, log_user, log_name, log_date, log_first_line, log_status, log_size) " +
                             $"values {record.toSqlValuesString()}";
+                        
                         command = new SQLiteCommand(cmd, m_dbConnection);
                         command.ExecuteNonQuery();
                     } catch (Exception) { 
